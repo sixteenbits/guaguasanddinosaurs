@@ -1,0 +1,1 @@
+IMAGE logo "gfx/VARA.png" NONE 
