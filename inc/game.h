@@ -29,9 +29,9 @@
 
 //player animations
 
-#define JUMP_A 0
-#define RUN_A 1
-#define DOWN_A 2
+#define JUMP_A 1
+#define RUN_A 0
+#define DOWN_A 0
 
 //player powerups
 
