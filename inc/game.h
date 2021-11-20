@@ -21,6 +21,7 @@
 #define DELTAY 1.2
 
 #define SND_VARA 1
+#define SND_JUMP 2
 
 
 #define CALCULATE_TICS(TICS) TICS << 5

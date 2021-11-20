@@ -19,6 +19,7 @@ void initGame(){
     SPR_init();
     //sound initialization
     SND_setPCM_XGM(SND_VARA,vaaraaa,sizeof(vaaraaa));
+    SND_setPCM_XGM(SND_JUMP,jump,sizeof(jump));
     SYS_enableInts();
     
     Player player = {0,NULL,POWER_1,16,16,0};
@@ -67,6 +68,7 @@ void update(){
             }
         break;
 
+
     }
     game.tics++;
     SPR_update();
@@ -90,6 +92,14 @@ void handleSincInput(){
 }
 
 void handleAsyncInput(u16 joy, u16 state, u16 change){
+
+switch(game.current_state){
+    case STAGE1_STATE:
+    case STAGE2_STATE:
+        if(state & change & BUTTON_A){
+            SND_startPlayPCM_XGM(SND_JUMP,0, SOUND_PCM_CH2);
+        }
+}
 
 }
 
