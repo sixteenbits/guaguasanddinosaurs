@@ -24,3 +24,5 @@ void initGame();
 void initState();
 void updatePhisycs();
 void update();
+void handleSincInput();
+void handleAsyncInput(u16, u16, u16);

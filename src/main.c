@@ -13,6 +13,7 @@ int main()
     {
         //For versions prior to SGDK 1.60 use VDP_waitVSync instead.
         initState();
+        handleSincInput();
         updatePhisycs();
         update();
         VDP_waitVSync();

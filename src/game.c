@@ -37,6 +37,9 @@ void initState(){
             case TITLE_STATE:
             VDP_drawImageEx(BG_B,&title,TILE_ATTR_FULL(PAL0,FALSE,FALSE,FALSE,game.ind),0,0,TRUE,CPU);
             break;
+            case STAGE1_STATE:
+            VDP_drawImageEx(BG_B,&stage1,TILE_ATTR_FULL(PAL0,FALSE,FALSE,FALSE,game.ind),0,0,TRUE,CPU);
+            break;
         }
         game.initiated=1;
 
@@ -57,6 +60,23 @@ void update(){
     }
     game.tics++;
     SPR_update();
+}
+
+void handleSincInput(){
+    int value = JOY_readJoypad(JOY_1);
+
+    switch(game.current_state){
+        case TITLE_STATE:
+            if(value & BUTTON_START){
+                game.current_state=STAGE1_STATE;
+                game.tics=0;
+                game.initiated=0;
+            }
+        break;
+    }
+    
+
+    
 }
 
 void updatePhisycs(){
