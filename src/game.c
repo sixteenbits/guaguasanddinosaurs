@@ -59,9 +59,14 @@ void initState(){
             SYS_disableInts();
             game.ind += logo.tileset->numTile;
             VDP_drawImageEx(BG_A, &fondoa, TILE_ATTR_FULL(PAL1, FALSE, FALSE, FALSE, game.ind), 0, 0, TRUE, CPU);
-            VDP_setPalette(PAL3,varacoin_sprt.palette->data);
+            VDP_setPalette(PAL3,objects.palette->data);
             VDP_setPalette(PAL2,player_sprite.palette->data);
             game.player.sprite = SPR_addSprite(&player_sprite, X_INIT, Y_INIT, TILE_ATTR(PAL2, FALSE,FALSE,FALSE));
+            Sprite * object = SPR_addSprite(&objects, 140,Y_INIT,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
+            Sprite * object2 = SPR_addSprite(&objects, 180,Y_INIT,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
+            Sprite * object3 = SPR_addSprite(&objects, 170,Y_INIT-40,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
+            SPR_setAnim(object3,1);
+            SPR_setAnim(object2,2);
             SPR_setAnim(game.player.sprite, RUN_A);
             VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
             SND_startPlay_XGM(stage);
@@ -87,19 +92,7 @@ void update(){
 
         case STAGE1_STATE:
         case STAGE2_STATE:
-        if(game.tics%CALCULATE_TICS(10)==0){
-           game.coins[game.current_coint].x=140;
-           game.coins[game.current_coint].y=155;
-           game.coins[game.current_coint].coin_spr=SPR_addSprite(&varacoin_sprt,140,155,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
-           game.current_coint++;
-           game.current_coint%=MAX_COINS;
-        }
-        for(int i=0;i<game.current_coint;i++){
-            Coin currcoin =game.coins[i];
-            currcoin.x-=2;
-            SPR_setPosition(currcoin.coin_spr,currcoin.x,currcoin.y);
-        }
-
+        
         break;
     }
     game.tics++;
