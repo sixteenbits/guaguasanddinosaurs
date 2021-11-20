@@ -2,14 +2,6 @@
 #include "gfx.h"
 #include "sprt.h"
 
-#define INITIAL_STATE=0
-#define LOGO_STATE 1
-#define TITLE_STATE 2
-#define STAGE1_STATE 3
-#define STAGE2_STATE 4
-#define GAMEOVER_STATE 5
-
-#define CALCULATE_TICS(TICS) TICS << 5
 
 
 void initGame(){
@@ -38,6 +30,8 @@ void initState(){
             VDP_drawImageEx(BG_B,&title,TILE_ATTR_FULL(PAL0,FALSE,FALSE,FALSE,game.ind),0,0,TRUE,CPU);
             break;
             case STAGE1_STATE:
+            game.player.lives=3;
+            
             VDP_drawImageEx(BG_B,&stage1,TILE_ATTR_FULL(PAL0,FALSE,FALSE,FALSE,game.ind),0,0,TRUE,CPU);
             break;
         }
