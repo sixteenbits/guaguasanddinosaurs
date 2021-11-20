@@ -2,6 +2,7 @@
 #include "gfx.h"
 #include "sprt.h"
 #include "snd.h"
+#include "music.h"
 
 
 
@@ -17,7 +18,6 @@ void initGame(){
     JOY_init();
     JOY_setEventHandler(handleAsyncInput);
     SPR_init();
-
 
     //sound initialization
     SND_setPCM_XGM(SND_VARA,vaaraaa,sizeof(vaaraaa));
@@ -47,23 +47,23 @@ void initState(){
             case TITLE_STATE:
             SYS_disableInts();
             VDP_drawImageEx(BG_B,&title,TILE_ATTR_FULL(PAL0,FALSE,FALSE,FALSE,game.ind),0,0,TRUE,CPU);
+            SND_startPlay_XGM(main_theme);
             SYS_enableInts();
             break;
             case STAGE1_STATE:
             game.player.lives=3;
             game.player.state=POWER_1;
             game.player.varacoins=0;
-            game.player.x=160;
-            game.player.y=160;
-             SYS_disableInts();
+            game.player.vel_y=FIX16(0);
+            SYS_disableInts();
             game.ind += logo.tileset->numTile;
             VDP_drawImageEx(BG_A, &fondoa, TILE_ATTR_FULL(PAL1, FALSE, FALSE, FALSE, game.ind), 0, 0, TRUE, CPU);
+            VDP_setPalette(PAL3,varacoin_sprt.palette->data);
             VDP_setPalette(PAL2,player_sprite.palette->data);
             game.player.sprite = SPR_addSprite(&player_sprite, X_INIT, Y_INIT, TILE_ATTR(PAL2, FALSE,FALSE,FALSE));
             SPR_setAnim(game.player.sprite, RUN);
             VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
-            VDP_setPalette(PAL3,varacoin_sprt.palette->data);
-            SPR_addSprite(&varacoin_sprt,154,155,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
+            SND_startPlay_XGM(stage);
             SYS_enableInts();
            
             break;
@@ -85,6 +85,19 @@ void update(){
         break;
 
         case STAGE1_STATE:
+        case STAGE2_STATE:
+        if(game.tics%CALCULATE_TICS(10)==0){
+           game.coins[game.current_coint].x=140;
+           game.coins[game.current_coint].y=155;
+           game.coins[game.current_coint].coin_spr=SPR_addSprite(&varacoin_sprt,140,155,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
+           game.current_coint++;
+           game.current_coint%=MAX_COINS;
+        }
+        for(int i=0;i<game.current_coint;i++){
+            Coin currcoin =game.coins[i];
+            currcoin.x-=2;
+            SPR_setPosition(currcoin.coin_spr,currcoin.x,currcoin.y);
+        }
         break;
     }
     game.tics++;
@@ -100,6 +113,7 @@ void handleSincInput(){
                 game.current_state=STAGE1_STATE;
                 game.tics=0;
                 game.initiated=0;
+                
             }
         break;
     }
@@ -167,6 +181,7 @@ void updateCamera(){
     switch (game.current_state)
     {
     case STAGE1_STATE:
+    case STAGE2_STATE:
         if(game.offset > STAGE1_LEN) game.offset=0;
         if(game.cuenta_pixel == 0){
             game.column_update=(((game.offset+320)>>3)&127);
@@ -175,8 +190,5 @@ void updateCamera(){
         VDP_setHorizontalScroll(BG_A, -game.offset);
         break;
     
-    case STAGE2_STATE:
-
-        break;
     }
 }

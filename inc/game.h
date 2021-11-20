@@ -38,6 +38,9 @@
 #define POWER_2 2
 #define POWER_3 4
 
+//MAX VALUES
+#define MAX_COINS 15
+
 //pyshics constants
 
 
@@ -71,6 +74,12 @@ typedef struct{
     int height;
 }Player;
 
+typedef struct{
+    Sprite *coin_spr;
+    u16 x;
+    u16 y;
+}Coin;
+
 // Game data
 struct{
     Player player;
@@ -80,6 +89,8 @@ struct{
     u16 ind;
     u16 offset;
     s16 column_update;
+    Coin coins[MAX_COINS];
+    u16 current_coint;
     u8 cuenta_pixel;
 }game;
 
