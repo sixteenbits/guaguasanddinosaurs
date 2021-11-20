@@ -20,6 +20,8 @@
 
 #define DELTAY 1.2
 
+#define SND_VARA 1
+
 
 #define CALCULATE_TICS(TICS) TICS << 5
 

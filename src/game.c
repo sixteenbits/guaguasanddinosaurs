@@ -1,6 +1,7 @@
 #include "game.h"
 #include "gfx.h"
 #include "sprt.h"
+#include "snd.h"
 
 
 
@@ -16,6 +17,8 @@ void initGame(){
     JOY_init();
     JOY_setEventHandler(handleAsyncInput);
     SPR_init();
+    //sound initialization
+    SND_setPCM_XGM(SND_VARA,vaaraaa,sizeof(vaaraaa));
     SYS_enableInts();
     
     Player player = {0,NULL,POWER_1,16,16,0};
@@ -29,6 +32,7 @@ void initState(){
             VDP_setPalette(PAL2,tiovara_sprite.palette->data);
             game.player.sprite= SPR_addSprite(&tiovara_sprite,160,160,TILE_ATTR(PAL2,TRUE,FALSE,FALSE));
             SPR_setAnim(game.player.sprite,4);
+            SND_startPlayPCM_XGM(SND_VARA,0, SOUND_PCM_CH4);
             break;
             case TITLE_STATE:
             VDP_drawImageEx(BG_B,&title,TILE_ATTR_FULL(PAL0,FALSE,FALSE,FALSE,game.ind),0,0,TRUE,CPU);
@@ -40,9 +44,11 @@ void initState(){
             game.player.x=160;
             game.player.y=160;
             VDP_drawImageEx(BG_B,&stage1,TILE_ATTR_FULL(PAL0,FALSE,FALSE,FALSE,game.ind),0,0,TRUE,CPU);
+            PAL_fadeIn(0,32,stage1.palette->data,70,FALSE);
             VDP_setPalette(PAL2,player_sprite.palette->data);
             game.player.sprite= SPR_addSprite(&player_sprite, game.player.x,game.player.y,TILE_ATTR(PAL2,FALSE,FALSE,FALSE));
             SPR_setAnim(game.player.sprite,4);
+           
             break;
         }
         game.initiated=1;
@@ -53,7 +59,7 @@ void update(){
 
     switch(game.current_state){
         case LOGO_STATE:
-            if(game.tics>CALCULATE_TICS(3)){
+            if(game.tics>CALCULATE_TICS(4)){
                 game.current_state=TITLE_STATE;
                 game.initiated=0;
                 game.tics=0;
