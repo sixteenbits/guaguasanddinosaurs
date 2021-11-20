@@ -9,6 +9,23 @@
 #define STAGE2_STATE 4
 #define GAMEOVER_STATE 5
 
+//Stage atributes
+
+#define STAGE1_LEN 1023
+#define STAGE2_LEN 1023
+
+//player actions
+
+#define RUN 1
+#define JUMP 2
+#define JUMP_T 20
+#define DOWN 0
+#define DOWN_T 20
+
+//player animations
+
+#define JUMP_A 0
+#define DOWN_A 2
 
 //player powerups
 
@@ -41,6 +58,8 @@ typedef struct{
     u16 vy;
     // Player coins
     u16 varacoins;
+    u8 action_s;
+    u8 action_t;
 }Player;
 
 // Game data
@@ -50,6 +69,9 @@ struct{
     u8 initiated;
     u16 tics;
     u16 ind;
+    u16 offset;
+    s16 column_update;
+    u8 cuenta_pixel;
 }game;
 
 #endif
@@ -60,3 +82,6 @@ void updatePhisycs();
 void update();
 void handleSincInput();
 void handleAsyncInput(u16, u16, u16);
+void jump();
+void down();
+void updateCamera();
