@@ -53,14 +53,14 @@ void initState(){
             game.player.lives=3;
             game.player.state=POWER_1;
             game.player.varacoins=0;
-            game.player.x=160;
-            game.player.y=160;
-             SYS_disableInts();
+            game.player.action_s = RUN;
+            game.player.vel_y = FIX16(0);
+            SYS_disableInts();
             game.ind += logo.tileset->numTile;
             VDP_drawImageEx(BG_A, &fondoa, TILE_ATTR_FULL(PAL1, FALSE, FALSE, FALSE, game.ind), 0, 0, TRUE, CPU);
             VDP_setPalette(PAL2,player_sprite.palette->data);
             game.player.sprite = SPR_addSprite(&player_sprite, X_INIT, Y_INIT, TILE_ATTR(PAL2, FALSE,FALSE,FALSE));
-            SPR_setAnim(game.player.sprite, RUN);
+            SPR_setAnim(game.player.sprite, RUN_A);
             VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
             VDP_setPalette(PAL3,varacoin_sprt.palette->data);
             SPR_addSprite(&varacoin_sprt,154,155,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
@@ -85,6 +85,7 @@ void update(){
         break;
 
         case STAGE1_STATE:
+            
         break;
     }
     game.tics++;
@@ -102,6 +103,15 @@ void handleSincInput(){
                 game.initiated=0;
             }
         break;
+        case STAGE1_STATE:
+            if(value & BUTTON_DOWN){
+                down();
+            }else if (game.player.action_s == DOWN){
+                game.player.action_s = RUN;
+                SPR_setAnim(game.player.sprite, RUN_A);
+            }
+        break;
+        
     }
     
 
@@ -118,7 +128,6 @@ void handleAsyncInput(u16 joy, u16 changed, u16 state){
             jump();
             SND_startPlayPCM_XGM(SND_JUMP,0, SOUND_PCM_CH2);
         }
-        else if(changed & state & BUTTON_DOWN) down();
         break;
     }
 }
@@ -130,11 +139,11 @@ void updatePhisycs(){
         SPR_setPosition(game.player.sprite, X_INIT, fix16ToInt(game.player.y));
         if(game.player.action_s == JUMP) game.player.vel_y = fix16Add(game.player.vel_y,GRAVITY);
         
-        if(game.player.action_s == JUMP && fix16ToInt(game.player.y) >= Y_INIT){
-            game.player.action_s = 0;
+        if(game.player.action_s == JUMP && fix16ToInt(game.player.y)+game.player.height >= Y_INIT){
+            game.player.action_s = RUN;
             game.player.vel_y = FIX16(0);
             game.player.y = FIX16(Y_INIT);
-            SPR_setAnim(game.player.sprite,RUN);
+            SPR_setAnim(game.player.sprite,RUN_A);
         }
 
 
@@ -146,7 +155,7 @@ void updatePhisycs(){
 }
 
 void jump(){
-    if(!game.player.action_s){
+    if(game.player.action_s == RUN){
         game.player.action_s = JUMP;
         game.player.vel_y= FIX16(-4);
         SPR_setAnim(game.player.sprite, JUMP_A);
@@ -154,7 +163,7 @@ void jump(){
 }
 
 void down(){
-    if (!game.player.action_s)
+    if (game.player.action_s == RUN || game.player.action_s == DOWN)
     {
         SPR_setAnim(game.player.sprite, DOWN_A);
         game.player.action_s = DOWN;
