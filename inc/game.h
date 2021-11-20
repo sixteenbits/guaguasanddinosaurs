@@ -41,6 +41,7 @@
 
 //MAX VALUES
 #define MAX_COINS 15
+#define MAX_OBJS 10
 
 //pyshics constants
 
@@ -81,6 +82,12 @@ typedef struct{
     u16 y;
 }Coin;
 
+typedef struct{
+    Sprite * sprt;
+    u16 x;
+    u16 y;
+}Object;
+
 // Game data
 struct{
     Player player;
@@ -91,6 +98,8 @@ struct{
     u16 offset;
     s16 column_update;
     Coin coins[MAX_COINS];
+    Object objs[MAX_OBJS];
+    u16 curr_obj;
     u16 current_coint;
     u8 cuenta_pixel;
 }game;

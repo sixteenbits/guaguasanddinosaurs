@@ -57,16 +57,13 @@ void initState(){
             game.player.action_s = RUN;
             game.player.vel_y = FIX16(0);
             SYS_disableInts();
+            game.tics=0;
             game.ind += logo.tileset->numTile;
             VDP_drawImageEx(BG_A, &fondoa, TILE_ATTR_FULL(PAL1, FALSE, FALSE, FALSE, game.ind), 0, 0, TRUE, CPU);
             VDP_setPalette(PAL3,objects.palette->data);
             VDP_setPalette(PAL2,player_sprite.palette->data);
             game.player.sprite = SPR_addSprite(&player_sprite, X_INIT, Y_INIT, TILE_ATTR(PAL2, FALSE,FALSE,FALSE));
-            Sprite * object = SPR_addSprite(&objects, 140,Y_INIT,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
-            Sprite * object2 = SPR_addSprite(&objects, 180,Y_INIT,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
-            Sprite * object3 = SPR_addSprite(&objects, 170,Y_INIT-40,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
-            SPR_setAnim(object3,1);
-            SPR_setAnim(object2,2);
+            game.curr_obj=0;
             SPR_setAnim(game.player.sprite, RUN_A);
             VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
             SND_startPlay_XGM(stage);
@@ -92,7 +89,20 @@ void update(){
 
         case STAGE1_STATE:
         case STAGE2_STATE:
-        
+            if(game.tics%200 == 0){
+                Sprite *spr=SPR_addSprite(&objects,145,Y_INIT,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
+                Object ob ={spr,335,Y_INIT};
+                u16 anim=random();
+                SPR_setAnim(ob.sprt,anim%3);
+                game.objs[game.curr_obj]=ob;
+                game.curr_obj++;
+                game.curr_obj%=MAX_OBJS;
+            }
+            for(int i=0;i<=game.curr_obj;i++){
+                Object ob =game.objs[i];
+                ob.x-=game.player.state;
+                SPR_setPosition(ob.sprt,ob.x,ob.y);
+            }
         break;
     }
     game.tics++;
@@ -142,7 +152,7 @@ void handleAsyncInput(u16 joy, u16 changed, u16 state){
 
 void updatePhisycs(){
     if(game.current_state == STAGE1_STATE || game.current_state == STAGE2_STATE){
-        game.offset++;
+        game.offset+=game.player.state;
         game.player.y = fix16Add(game.player.y, game.player.vel_y);
         SPR_setPosition(game.player.sprite, X_INIT, fix16ToInt(game.player.y));
         if(game.player.action_s == JUMP) game.player.vel_y = fix16Add(game.player.vel_y,GRAVITY);
