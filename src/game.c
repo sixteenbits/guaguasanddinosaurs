@@ -20,7 +20,7 @@ void initGame(){
 
     //sound initialization
     SND_setPCM_XGM(SND_VARA,vaaraaa,sizeof(vaaraaa));
-    SND_setPCM_XGM(SND_JUMP,jump,sizeof(jump));
+    SND_setPCM_XGM(SND_JUMP,jump_snd,sizeof(jump_snd));
     SYS_enableInts();
     
     Player player = {0,NULL,POWER_1,16,16,0};
