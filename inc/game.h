@@ -21,15 +21,16 @@
 
 //player actions
 
-#define RUN 1
+#define RUN 0
 #define JUMP 2
 #define JUMP_T 89
-#define DOWN 0
+#define DOWN 1
 #define DOWN_T 90
 
 //player animations
 
 #define JUMP_A 0
+#define RUN_A 1
 #define DOWN_A 2
 
 //player powerups
