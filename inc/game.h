@@ -14,13 +14,18 @@
 #define STAGE1_LEN 1023
 #define STAGE2_LEN 1023
 
+//Init position
+
+#define X_INIT 10
+#define Y_INIT 155
+
 //player actions
 
 #define RUN 1
 #define JUMP 2
-#define JUMP_T 20
+#define JUMP_T 89
 #define DOWN 0
-#define DOWN_T 20
+#define DOWN_T 90
 
 //player animations
 
@@ -35,13 +40,17 @@
 
 //pyshics constants
 
-#define DELTAY 1.2
+
 
 #define SND_VARA 1
 #define SND_JUMP 2
 
 
+#define GRAVITY FIX16(0.2)
+
+
 #define CALCULATE_TICS(TICS) TICS << 5
+#define CALCULATE_SECS(SECS) SECS >> 5
 
 // Player struct
 typedef struct{
@@ -53,13 +62,13 @@ typedef struct{
     // Player pos X
     u16 x;
     // Player pos Y
-    u16 y;
-    // Jump Speed
-    u16 vy;
+    fix16 y;
     // Player coins
     u16 varacoins;
     u8 action_s;
     u8 action_t;
+    fix16 vel_y;
+    int height;
 }Player;
 
 // Game data
