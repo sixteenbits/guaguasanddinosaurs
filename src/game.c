@@ -31,7 +31,10 @@ void initState(){
             break;
             case STAGE1_STATE:
             game.player.lives=3;
-            
+            game.player.state=POWER_1;
+            game.player.varacoins=0;
+            game.player.x=160;
+            game.player.y=160;
             VDP_drawImageEx(BG_B,&stage1,TILE_ATTR_FULL(PAL0,FALSE,FALSE,FALSE,game.ind),0,0,TRUE,CPU);
             break;
         }
