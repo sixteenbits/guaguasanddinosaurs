@@ -91,16 +91,16 @@ void update(){
         case STAGE2_STATE:
             if(game.tics%200 == 0){
                 Sprite *spr=SPR_addSprite(&objects,145,Y_INIT,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
-                Object ob ={spr,335,Y_INIT};
+                Object ob ={spr,145,Y_INIT};
                 u16 anim=random();
                 SPR_setAnim(ob.sprt,anim%3);
                 game.objs[game.curr_obj]=ob;
                 game.curr_obj++;
                 game.curr_obj%=MAX_OBJS;
             }
-            for(int i=0;i<=game.curr_obj;i++){
+            for(int i=0;i<MAX_OBJS;i++){
                 Object ob =game.objs[i];
-                ob.x-=game.player.state;
+                ob.x-=game.player.state*20;
                 SPR_setPosition(ob.sprt,ob.x,ob.y);
             }
         break;
