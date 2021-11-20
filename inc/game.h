@@ -14,6 +14,7 @@ struct{
     Player player;
     u8 current_state;
     u8 initiated;
+    u16 tics;
     u16 ind;
 }game;
 
