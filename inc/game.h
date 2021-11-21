@@ -17,7 +17,7 @@
 //Init position
 
 #define X_INIT 10
-#define Y_INIT 155
+#define Y_INIT 140
 
 //player actions
 
@@ -102,6 +102,7 @@ struct{
     u16 curr_obj;
     u16 current_coint;
     u8 cuenta_pixel;
+    u16 x_obstaculo;
 }game;
 
 #endif

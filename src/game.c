@@ -29,6 +29,7 @@ void initGame(){
     game.offset = 0;
     game.column_update = 0;
     game.cuenta_pixel = 0;
+    game.x_obstaculo = 0;
     JOY_setEventHandler(handleAsyncInput);
 
 }
@@ -69,7 +70,13 @@ void initState(){
             VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
             SND_startPlay_XGM(stage);
             SYS_enableInts();
-           
+            Sprite *spr=SPR_addSprite(&objects,145,Y_INIT,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
+            Object ob ={spr,145,Y_INIT+15};
+            u16 anim=random();
+            SPR_setAnim(ob.sprt,anim&3);
+            game.objs[game.curr_obj]=ob;
+            game.curr_obj++;
+            game.curr_obj&=MAX_OBJS;
             break;
         }
         game.initiated=1;
@@ -90,20 +97,16 @@ void update(){
 
         case STAGE1_STATE:
         case STAGE2_STATE:
-            if(game.tics%200 == 0){
-                Sprite *spr=SPR_addSprite(&objects,145,Y_INIT,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
-                Object ob ={spr,145,Y_INIT};
-                u16 anim=random();
-                SPR_setAnim(ob.sprt,anim&3);
-                game.objs[game.curr_obj]=ob;
-                game.curr_obj++;
-                game.curr_obj&=MAX_OBJS;
-            }
-            for(int i=0;i<MAX_OBJS;i++){
-                Object ob =game.objs[i];
-                ob.x-=game.player.state*20;
-                SPR_setPosition(ob.sprt,ob.x,ob.y);
-            }
+                /*if(game.tics%200 == 0){
+                    Sprite *spr=SPR_addSprite(&objects,145,Y_INIT,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
+                    Object ob ={spr,145,Y_INIT};
+                    u16 anim=random();
+                    SPR_setAnim(ob.sprt,anim&3);
+                    game.objs[game.curr_obj]=ob;
+                    game.curr_obj++;
+                    game.curr_obj&=MAX_OBJS;
+                }*/
+            
         break;
     }
     game.tics++;
@@ -154,6 +157,7 @@ void handleAsyncInput(u16 joy, u16 changed, u16 state){
 void updatePhisycs(){
     if(game.current_state == STAGE1_STATE || game.current_state == STAGE2_STATE){
         game.offset+=game.player.state;
+        game.x_obstaculo+=game.player.state;
         game.player.y = fix16Add(game.player.y, game.player.vel_y);
         SPR_setPosition(game.player.sprite, X_INIT, fix16ToInt(game.player.y));
         if(game.player.action_s == JUMP) game.player.vel_y = fix16Add(game.player.vel_y,GRAVITY);
@@ -202,6 +206,20 @@ void updateCamera(){
             VDP_setMapEx(BG_A, fondoa.tilemap, TILE_ATTR_FULL(PAL1, FALSE, FALSE, FALSE, game.ind), game.column_update, 0, game.column_update, 0, 1, 28);
         }
         VDP_setHorizontalScroll(BG_A, -game.offset);
+        
+        Object ob =game.objs[0];
+
+        SPR_setPosition(ob.sprt,320-(game.x_obstaculo%380),ob.y);
+        if(game.x_obstaculo > 380){
+            u16 r_sprite = random()%3;
+            if(r_sprite == 1)
+                ob.y = Y_INIT-100;
+            else
+                ob.y = Y_INIT+15;
+            SPR_setAnim(ob.sprt,r_sprite);
+            game.x_obstaculo = 0;
+
+        } 
         break;
     
     }
