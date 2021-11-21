@@ -187,6 +187,7 @@ void down(){
         SPR_setAnim(game.player.sprite, DOWN_A);
         game.player.action_s = DOWN;
         game.player.action_t = DOWN_T;
+        
     }
     
 }

@@ -31,7 +31,7 @@
 
 #define JUMP_A 1
 #define RUN_A 0
-#define DOWN_A 0
+#define DOWN_A 2
 
 //player powerups
 
