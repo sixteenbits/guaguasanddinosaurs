@@ -65,6 +65,11 @@ void initState(){
             VDP_setPalette(PAL2,player_sprite.palette->data);
             game.player.sprite = SPR_addSprite(&player_sprite, X_INIT, Y_INIT, TILE_ATTR(PAL2, FALSE,FALSE,FALSE));
             game.curr_obj=0;
+            Sprite *lives=SPR_addSprite(&objects,5,4,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
+            SPR_setAnim(lives,3);
+            char strlives[5];
+            sprintf(strlives,"x%d",game.player.lives);
+            VDP_drawTextBG(BG_B,strlives,7,4);
             SPR_setAnim(game.player.sprite, RUN_A);
             VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
             SND_startPlay_XGM(stage);
