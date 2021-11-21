@@ -185,7 +185,7 @@ void updatePhisycs(){
 void jump(){
     if(game.player.action_s == RUN){
         game.player.action_s = JUMP;
-        game.player.vel_y= FIX16(-4);
+        game.player.vel_y= FIX16(-5);
         SPR_setAnim(game.player.sprite, JUMP_A);
     }
 }
@@ -218,10 +218,11 @@ void updateCamera(){
         SPR_setPosition(ob.sprt,320-(game.x_obstaculo%380),ob.y);
         if(game.x_obstaculo > 380){
             u16 r_sprite = random()%3;
-            if(r_sprite == 1)
-                ob.y = Y_INIT-100;
+            u16 i= 1;
+            if(r_sprite == i)
+                game.objs[0].y = Y_INIT -32;
             else
-                ob.y = Y_INIT+15;
+                game.objs[0].y = Y_INIT+15;
             SPR_setAnim(ob.sprt,r_sprite);
             game.x_obstaculo = 0;
 
