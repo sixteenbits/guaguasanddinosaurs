@@ -46,6 +46,7 @@ void initState(){
             break;
             case TITLE_STATE:
             SYS_disableInts();
+            game.ind=TILE_USERINDEX;
             VDP_drawImageEx(BG_B,&title,TILE_ATTR_FULL(PAL0,FALSE,FALSE,FALSE,game.ind),0,0,TRUE,CPU);
             SND_startPlay_XGM(main_theme);
             SYS_enableInts();
@@ -93,10 +94,10 @@ void update(){
                 Sprite *spr=SPR_addSprite(&objects,145,Y_INIT,TILE_ATTR(PAL3,FALSE,FALSE,FALSE));
                 Object ob ={spr,145,Y_INIT};
                 u16 anim=random();
-                SPR_setAnim(ob.sprt,anim%3);
+                SPR_setAnim(ob.sprt,anim&3);
                 game.objs[game.curr_obj]=ob;
                 game.curr_obj++;
-                game.curr_obj%=MAX_OBJS;
+                game.curr_obj&=MAX_OBJS;
             }
             for(int i=0;i<MAX_OBJS;i++){
                 Object ob =game.objs[i];
