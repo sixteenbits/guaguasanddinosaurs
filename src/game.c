@@ -162,7 +162,7 @@ void handleAsyncInput(u16 joy, u16 changed, u16 state){
 void updatePhisycs(){
     if(game.current_state == STAGE1_STATE || game.current_state == STAGE2_STATE){
         game.offset+=game.player.state;
-        game.x_obstaculo+=game.player.state;
+        game.x_obstaculo+=game.player.state<<1;
         game.player.y = fix16Add(game.player.y, game.player.vel_y);
         SPR_setPosition(game.player.sprite, X_INIT, fix16ToInt(game.player.y));
         if(game.player.action_s == JUMP) game.player.vel_y = fix16Add(game.player.vel_y,GRAVITY);
