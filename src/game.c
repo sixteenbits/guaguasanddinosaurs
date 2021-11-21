@@ -60,6 +60,7 @@ void initState(){
             game.player.vel_y = FIX16(0);
             SYS_disableInts();
             game.tics=0;
+            VDP_drawImageEx(BG_B,&fondob,TILE_ATTR_FULL(PAL0,FALSE,FALSE,FALSE,game.ind),0,0,TRUE,CPU);
             game.ind += logo.tileset->numTile;
             VDP_drawImageEx(BG_A, &fondoa, TILE_ATTR_FULL(PAL1, FALSE, FALSE, FALSE, game.ind), 0, 0, TRUE, CPU);
             VDP_setPalette(PAL3,objects.palette->data);
@@ -153,7 +154,7 @@ void handleAsyncInput(u16 joy, u16 changed, u16 state){
         /* code */
         if (changed & state & (BUTTON_A|BUTTON_B|BUTTON_C)){ 
             jump();
-            SND_startPlayPCM_XGM(SND_JUMP,0, SOUND_PCM_CH4);
+            SND_startPlayPCM_XGM(SND_JUMP,1, SOUND_PCM_CH4);
         }
         break;
     }

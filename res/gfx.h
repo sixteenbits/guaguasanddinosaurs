@@ -4,5 +4,6 @@
 extern const Image logo;
 extern const Image title;
 extern const Image fondoa;
+extern const Image fondob;
 
 #endif // _RES_GFX_H_
