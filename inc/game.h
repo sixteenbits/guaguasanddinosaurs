@@ -51,7 +51,7 @@
 #define SND_JUMP 2
 
 
-#define GRAVITY FIX16(0.2)
+#define GRAVITY FIX16(0.1)
 
 
 #define CALCULATE_TICS(TICS) TICS << 5
