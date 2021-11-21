@@ -153,7 +153,7 @@ void handleAsyncInput(u16 joy, u16 changed, u16 state){
         /* code */
         if (changed & state & (BUTTON_A|BUTTON_B|BUTTON_C)){ 
             jump();
-            SND_startPlayPCM_XGM(SND_JUMP,0, SOUND_PCM_CH2);
+            SND_startPlayPCM_XGM(SND_JUMP,0, SOUND_PCM_CH4);
         }
         break;
     }
